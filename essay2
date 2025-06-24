@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnglishBuddies Essay Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      background-color: #ff4c4c;
+      padding: 20px;
+      color: white;
+    }
+    nav {
+      background-color: #d63333;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #d63333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-top: 30px;
+      display: none;
+    }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #ff4c4c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EnglishBuddies Essay Checker</h1>
+    <p>Submit your essay and get feedback instantly!</p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#tips">Tips</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <section id="home">
+    <form id="essayForm">
+      <textarea id="essayText" placeholder="Paste your essay here..."></textarea>
+      <button type="submit">Check Essay</button>
+    </form>
+
+    <div id="result">
+      <h2>Feedback:</h2>
+      <p id="feedbackText"></p>
+    </div>
+  </section>
+
+  <section id="tips" style="margin-top: 40px;">
+    <h2>Essay Writing Tips</h2>
+    <ul>
+      <li>Use formal vocabulary</li>
+      <li>Avoid contractions (use "do not" instead of "don't")</li>
+      <li>Keep paragraphs clear and structured</li>
+      <li>Use linking words like "however", "moreover", "in conclusion"</li>
+    </ul>
+  </section>
+
+  <section id="about" style="margin-top: 40px;">
+    <h2>About This Project</h2>
+    <p>This tool was created to help students prepare for English exams by giving instant feedback on their essays. More features coming soon!</p>
+  </section>
+
+  <footer>
+    &copy; 2025 EnglishBuddies. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById('essayForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const essayText = document.getElementById('essayText').value;
+
+      document.getElementById('feedbackText').innerText = 'Analyzing...';
+      document.getElementById('result').style.display = 'block';
+
+      try {
+        const response = await fetch('/submit_essay', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ essayText })
+        });
+
+        const data = await response.json();
+        document.getElementById('feedbackText').innerText = data.feedback;
+      } catch (error) {
+        document.getElementById('feedbackText').innerText = 'Error analyzing the essay.';
+      }
+    });
+  </script>
+</body>
+</html>
